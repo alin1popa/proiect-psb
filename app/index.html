@@ -17,6 +17,15 @@
     
         <link rel="stylesheet" type="text/css" href="styles.css"/>
         
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+        $( function() {
+            $( "#datepicker" ).datepicker({dateFormat: "dd-mm-yy"});
+        } );
+        </script>
+        
         <script>
             var allclasses = [];
             var classdata = {};
@@ -110,6 +119,26 @@
                 displayPage(".bookclass-page");
             }
             
+            function viewClassesForDate() {
+                selectedDate = $("#datepicker").val();
+                
+                dates=[{id: 4, name: "baschet", date: selectedDate, time: "10:61"}];
+                
+                $("#dates").html("");
+                for (let p of dates) {
+                    console.log(p);
+                    $("#dates").append('<div class="date">\
+                            <span><strong>'+p.name+'</strong></span> \
+                            <span>'+p.date+'</span> \
+                            <span>'+p.time+'</span> \
+                            <button class="form-control btn-success bookbtn" onclick="bookclass('+p.id+')">Book</button>\
+                        </div>');
+                };
+                
+                appstate = CLASSESFORDATES;
+                displayPage(".bookclass-page");
+            }
+            
             $(document).ready(function() {
                 
                 $("#refresh").click(getAllClasses);
@@ -124,7 +153,6 @@
     <body>
         <div class="page login-page" id="login-page">
             <div class="content form-horizontal">
-            
                 <div class="logo"><h1>Fitness MAX 2.0</h1></div>
             
                 <div class="box login-box">
@@ -133,7 +161,7 @@
                     <button class="form-control btn-primary" id="login" name="login" value="login" onclick="login()">Log in</button>
                 </div>
                     
-                <div class="or"> OR </div>
+                <div class="or"><h4> OR <h4></div>
                 
                 <div class="box signup-box">
                     <input class="form-control" type="text" id="username" name="username" placeholder="username"/>
@@ -153,15 +181,18 @@
         
             <div class="content">
                 <div class="box allclasses-box">
+                    <div class="pagetitle"><h4>Pick a class</h4></div>
                     <div class="classes" id="classes">
                     </div>
                     <button class="form-control btn-primary" id="refresh" name="refresh" value="refresh">Refresh</button>
                 </div>
                 
-                <div class="or"> OR </div>
+                <div class="or"><h4> OR <h4></div>
                 
                 <div class="box pickdate-box">
-                    
+                    <div class="pagetitle"><h4>Choose a date</h4></div>
+                    <input  class="form-control" type="text" id="datepicker">
+                    <button class="form-control btn-primary" id="viewclsondate" name="viewclsondate" value="viewclsondate" onclick="viewClassesForDate()">View classes for this date</button>
                 </div>
             </div>
         </div>
@@ -174,6 +205,8 @@
             </div>
         
             <div class="content">
+                <div class="pagetitle"><h4>Class information</h4></div>
+            
                 <div class="box viewclass-box">
                     <div id="classinfos" class="classinfos"></div>
                     <button class="form-control btn-primary" id="viewdates" name="viewdates" value="viewdates" onclick="viewDatesForClass()">View dates for this class</button>
@@ -189,6 +222,8 @@
             </div>
             
             <div class="content form-inline">
+                <div class="pagetitle"><h4>Book an available slot</h4></div>
+            
                 <div class="box bookclass-box">
                     <div id="dates" class="dates">
                         
