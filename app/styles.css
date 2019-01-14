@@ -31,6 +31,8 @@
 .form-control {
     width: 400px;
     margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .or {
@@ -39,4 +41,72 @@
     width: 50px;
     margin-bottom: 50px;
     margin-top: 50px;
+}
+
+.logo {
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.classes, .classinfos {
+    width: 525px;
+}
+
+.class {
+    float: left;
+    width: 100px;
+    height: 100px;
+    background-color: #CCCCCC;
+    
+    border-radius: 20px;
+    font-size: 18px;
+    text-align: center;
+    line-height: 100px;
+   
+    margin-bottom: 20px;
+    margin-left: 25px;
+}
+
+.class:hover {
+    background-color: #DDDDDD;
+}
+
+.navbar {
+    width: 100%;
+    position: absolute;
+    background-color: #F0F0F0;
+    line-height: 45px;
+    height: 50px;
+}
+
+.navbar a {
+    font-weight: 900;
+    font-size: 20px;
+    margin-left: 30px;
+    text-decoration: none;
+}
+
+.logoutlink {
+    float: right;
+    margin-right: 30px;
+}
+
+.classinfo {
+    font-size: 16px;
+}
+
+.date span {
+    margin-right: 15px;
+}
+
+.date {
+    margin-bottom: 20px;
+}
+
+.bookbtn {
+    width: 80px;
+    margin-bottom: 0;
 }

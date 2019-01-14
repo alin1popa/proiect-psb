@@ -6,29 +6,194 @@
         <!-- Optional theme -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
+        <script
+          src="https://code.jquery.com/jquery-3.3.1.min.js"
+          integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+          crossorigin="anonymous"></script>
+    
+        
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     
         <link rel="stylesheet" type="text/css" href="styles.css"/>
+        
+        <script>
+            var allclasses = [];
+            var classdata = {};
+            
+            var LOGOUT = 0;
+            var ALLCLASSES = 1;
+            var VIEWCLASS = 2;
+            var DATESFORCLASS = 3;
+            var CLASSESFORDATES = 4;
+            var appstate = 0;
+            
+            function getAllClasses() {
+                allclasses = ["baschet", "fotbal", "alergare", "plm1", "plm2", "plm3", "plm4"];
+                $("#classes").html("");
+                for (let cls of allclasses) {
+                    $("#classes").append('<div class="class" onclick="getClassData(\''+cls+'\')">'+cls+'</div>');
+                }
+            }
+            
+            function getClassData(name) {
+                classdata = {
+                    name: name,
+                    description: "aici te poti juca cu mingile noastre slkfjs dlkfsldkf jdlkfjsdl jldsjf lsdjfljs d",
+                    trainer: "mr. balls"
+                }
+                
+                console.log(classdata);
+                $("#classinfos").html("");
+                for (let p in classdata) {
+                    $("#classinfos").append('<p class="classinfo"><strong>'+p+'</strong>: '+classdata[p]+'</p>');
+                    console.log(classdata[p]);
+                }
+                
+                displayPage(".viewclass-page");
+                appstate = VIEWCLASS;
+            }
+            
+            function hideAllPages() {
+                $(".page").each(function() {
+                    $(this).css("display", "none");
+                });
+            }
+            
+            function displayPage(page) {
+                hideAllPages();
+                $(page).css("display", "block");
+            }
+            
+            function gohome() {
+                displayPage(".allclasses-page");
+                appstate = ALLCLASSES;
+            }
+            
+            function logout() {
+                appstate = LOGOUT;
+                displayPage(".login-page");
+            }
+            
+            function login() {
+                gohome();
+            }
+            
+            function goback() {
+                if (appstate == VIEWCLASS) {
+                    gohome();
+                } else if (appstate == DATESFORCLASS) {
+                    appstate = VIEWCLASS;
+                    displayPage(".viewclass-page");
+                } else if (appstate == CLASSESFORDATES) {
+                    gohome();
+                }
+            }
+            
+            function viewDatesForClass() {
+                selectedClassName = classdata.name;
+                
+                dates=[{id: 4, name: selectedClassName, date: "1-1-2018", time: "10:61"}];
+                
+                $("#dates").html("");
+                for (let p of dates) {
+                    console.log(p);
+                    $("#dates").append('<div class="date">\
+                            <span><strong>'+p.name+'</strong></span> \
+                            <span>'+p.date+'</span> \
+                            <span>'+p.time+'</span> \
+                            <button class="form-control btn-success bookbtn" onclick="bookclass('+p.id+')">Book</button>\
+                        </div>');
+                };
+                
+                appstate = DATESFORCLASS;
+                displayPage(".bookclass-page");
+            }
+            
+            $(document).ready(function() {
+                
+                $("#refresh").click(getAllClasses);
+                getClassData("asdasd"); // TODO remove
+                
+                //gohome();
+                displayPage(".login-page");
+            });
+        </script>
     </head>
     
     <body>
-        <div class="page loginpage">
+        <div class="page login-page" id="login-page">
             <div class="content form-horizontal">
-            <div class="box loginbox">
-                <input class="form-control" type="text" id="username" name="username" placeholder="username"/>
-                <input class="form-control" type="password" id="password" name="password" placeholder="password"/>
-                <button class="form-control btn-primary" id="login" name="login" value="login">Log in</button>
-            </div>
-                
-            <div class="or"> OR </div>
             
-            <div class="box signupbox">
-                <input class="form-control" type="text" id="username" name="username" placeholder="username"/>
-                <input class="form-control" type="password" id="password" name="password" placeholder="password"/>
-                <input class="form-control" type="text" id="name" name="name" placeholder="name"/>
-                <button class="form-control btn-primary" id="signup" name="signup" value="signup">Sign up</button>
-            <div>
+                <div class="logo"><h1>Fitness MAX 2.0</h1></div>
+            
+                <div class="box login-box">
+                    <input class="form-control" type="text" id="username" name="username" placeholder="username"/>
+                    <input class="form-control" type="password" id="password" name="password" placeholder="password"/>
+                    <button class="form-control btn-primary" id="login" name="login" value="login" onclick="login()">Log in</button>
+                </div>
+                    
+                <div class="or"> OR </div>
+                
+                <div class="box signup-box">
+                    <input class="form-control" type="text" id="username" name="username" placeholder="username"/>
+                    <input class="form-control" type="password" id="password" name="password" placeholder="password"/>
+                    <input class="form-control" type="text" id="name" name="name" placeholder="name"/>
+                    <button class="form-control btn-primary" id="signup" name="signup" value="signup">Sign up</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="page allclasses-page" id="allclasses-page">
+            <div class="navbar">
+                <a class="homelink" href="#" onclick="gohome()">Home</a>
+                <a class="backlink" href="#" onclick="goback()">Back</a>
+                <a class="logoutlink" href="#" onclick="logout()">Log out</a>
+            </div>
+        
+            <div class="content">
+                <div class="box allclasses-box">
+                    <div class="classes" id="classes">
+                    </div>
+                    <button class="form-control btn-primary" id="refresh" name="refresh" value="refresh">Refresh</button>
+                </div>
+                
+                <div class="or"> OR </div>
+                
+                <div class="box pickdate-box">
+                    
+                </div>
+            </div>
+        </div>
+        
+        <div class="page viewclass-page" id="viewclass-page">
+            <div class="navbar">
+                <a class="homelink" href="#" onclick="gohome()">Home</a>
+                <a class="backlink" href="#" onclick="goback()">Back</a>
+                <a class="logoutlink" href="#" onclick="logout()">Log out</a>
+            </div>
+        
+            <div class="content">
+                <div class="box viewclass-box">
+                    <div id="classinfos" class="classinfos"></div>
+                    <button class="form-control btn-primary" id="viewdates" name="viewdates" value="viewdates" onclick="viewDatesForClass()">View dates for this class</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="page bookclass-page" id="bookclass-page">
+            <div class="navbar">
+                <a class="homelink" href="#" onclick="gohome()">Home</a>
+                <a class="backlink" href="#" onclick="goback()">Back</a>
+                <a class="logoutlink" href="#" onclick="logout()">Log out</a>
+            </div>
+            
+            <div class="content form-inline">
+                <div class="box bookclass-box">
+                    <div id="dates" class="dates">
+                        
+                    </div>
+                </div>
             </div>
         </div>
     </body>
