@@ -35,7 +35,14 @@
             var VIEWCLASS = 2;
             var DATESFORCLASS = 3;
             var CLASSESFORDATES = 4;
+            var ADMINPANEL = 5;
             var appstate = 0;
+            
+            var cusername;
+            var ctoken;
+            var isadmin = false;
+            
+            var API = "http://localhost:8080/customer/";
             
             function getAllClasses() {
                 allclasses = ["baschet", "fotbal", "alergare", "plm1", "plm2", "plm3", "plm4"];
@@ -85,7 +92,46 @@
             }
             
             function login() {
-                gohome();
+                var url = API + "login/";
+                var data = {
+                    username: $("#lusername").val(),
+                    password: $("#lpassword").val()
+                }
+                var success = function(response) {
+                    ctoken = response;
+                    cusername = $("#lusername").val();
+                    getAllClasses();
+                    if (cusername == "admin"){
+                        isadmin = true;
+                        $(".admin").each(function() { $(this).css("display", "inline") });
+                    }
+                    else {
+                        isadmin = false;
+                        $(".admin").each(function() { $(this).css("display", "none") });
+                    }
+                        
+                    gohome();
+                }
+            
+                $.post(url, data, success);
+                success("1234"); // TODO remove
+            }
+            
+            function signup() {
+                var url = API + "signup/";
+                var data = {
+                    username: $("#username").val(),
+                    password: $("#password").val(),
+                    name: $("#name").val(),
+                }
+                var success = function(response) {
+                    //ctoken = response;
+                    //cusername = $("#username").val();
+                    //gohome();
+                }
+            
+                $.post(url, data, success);
+                //success("1234"); // TODO remove
             }
             
             function goback() {
@@ -95,6 +141,8 @@
                     appstate = VIEWCLASS;
                     displayPage(".viewclass-page");
                 } else if (appstate == CLASSESFORDATES) {
+                    gohome();
+                } else if (appstate == ADMINPANEL) {
                     gohome();
                 }
             }
@@ -139,6 +187,24 @@
                 displayPage(".bookclass-page");
             }
             
+            function viewbookings() {
+                bookings=[{client: "George Popescu", name: "baschet", date: "1-1-2018", time: "10:61"}];
+                
+                $("#bookings").html("");
+                for (let p of bookings) {
+                    console.log(p);
+                    $("#bookings").append('<div class="booking">\
+                            <span><strong>'+p.client+'</strong></span> \
+                            <span><strong>'+p.name+'</strong></span> \
+                            <span>'+p.date+'</span> \
+                            <span>'+p.time+'</span> \
+                        </div>');
+                };
+                
+                appstate = ADMINPANEL;
+                displayPage(".admin-page");
+            }
+            
             $(document).ready(function() {
                 
                 $("#refresh").click(getAllClasses);
@@ -156,8 +222,8 @@
                 <div class="logo"><h1>Fitness MAX 2.0</h1></div>
             
                 <div class="box login-box">
-                    <input class="form-control" type="text" id="username" name="username" placeholder="username"/>
-                    <input class="form-control" type="password" id="password" name="password" placeholder="password"/>
+                    <input class="form-control" type="text" id="lusername" name="lusername" placeholder="username"/>
+                    <input class="form-control" type="password" id="lpassword" name="lpassword" placeholder="password"/>
                     <button class="form-control btn-primary" id="login" name="login" value="login" onclick="login()">Log in</button>
                 </div>
                     
@@ -167,7 +233,7 @@
                     <input class="form-control" type="text" id="username" name="username" placeholder="username"/>
                     <input class="form-control" type="password" id="password" name="password" placeholder="password"/>
                     <input class="form-control" type="text" id="name" name="name" placeholder="name"/>
-                    <button class="form-control btn-primary" id="signup" name="signup" value="signup">Sign up</button>
+                    <button class="form-control btn-primary" id="signup" name="signup" value="signup" onclick="signup()">Sign up</button>
                 </div>
             </div>
         </div>
@@ -177,6 +243,7 @@
                 <a class="homelink" href="#" onclick="gohome()">Home</a>
                 <a class="backlink" href="#" onclick="goback()">Back</a>
                 <a class="logoutlink" href="#" onclick="logout()">Log out</a>
+                <a class="admin" href="#" onclick="viewbookings()" id="admin">Admin</a>
             </div>
         
             <div class="content">
@@ -202,6 +269,7 @@
                 <a class="homelink" href="#" onclick="gohome()">Home</a>
                 <a class="backlink" href="#" onclick="goback()">Back</a>
                 <a class="logoutlink" href="#" onclick="logout()">Log out</a>
+                <a class="admin" href="#" onclick="viewbookings()" id="admin">Admin</a>
             </div>
         
             <div class="content">
@@ -219,6 +287,7 @@
                 <a class="homelink" href="#" onclick="gohome()">Home</a>
                 <a class="backlink" href="#" onclick="goback()">Back</a>
                 <a class="logoutlink" href="#" onclick="logout()">Log out</a>
+                <a class="admin" href="#" onclick="viewbookings()" id="admin">Admin</a>
             </div>
             
             <div class="content form-inline">
@@ -226,6 +295,25 @@
             
                 <div class="box bookclass-box">
                     <div id="dates" class="dates">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="page admin-page" id="admin-page">
+            <div class="navbar">
+                <a class="homelink" href="#" onclick="gohome()">Home</a>
+                <a class="backlink" href="#" onclick="goback()">Back</a>
+                <a class="logoutlink" href="#" onclick="logout()">Log out</a>
+                <a class="admin" href="#" onclick="viewbookings()" id="admin">Admin</a>
+            </div>
+            
+            <div class="content">
+                <div class="pagetitle"><h4>View existing bookings</h4></div>
+            
+                <div class="box bookings-box">
+                    <div id="bookings" class="bookings">
                         
                     </div>
                 </div>

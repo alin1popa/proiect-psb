@@ -97,7 +97,7 @@
     text-decoration: none;
 }
 
-.logoutlink {
+.logoutlink, .admin {
     float: right;
     margin-right: 30px;
 }
@@ -106,15 +106,19 @@
     font-size: 16px;
 }
 
-.date span {
+.date span, .booking span {
     margin-right: 15px;
 }
 
-.date {
+.date, .booking {
     margin-bottom: 20px;
 }
 
 .bookbtn {
     width: 80px;
     margin-bottom: 0;
+}
+
+#admin {
+    display: none;
 }
