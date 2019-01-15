@@ -49,7 +49,8 @@
                 
                 var url = API + "getall/";
                 var data = {
-                    token: ctoken
+                    accessToken: ctoken,
+                    username: cusername
                 }
                 var success = function(response) {
                     allclasses = response;
@@ -73,7 +74,8 @@
                 
                 var url = API + "getclass/";
                 var data = {
-                    token: ctoken
+                    accessToken: ctoken,
+                    username: cusername
                 }
                 var success = function(response) {
                     classdata = response;
@@ -116,7 +118,7 @@
             function logout() {
                 var url = API + "signup/";
                 var data = {
-                    token: ctoken,
+                    accessToken: ctoken,
                     username: cusername
                 }
                 var success = function(response) {
@@ -174,7 +176,8 @@
             function bookclass(id) {
                 var url = API + "book/";
                 var data = {
-                    token: ctoken,
+                    accessToken: ctoken,
+                    username: cusername,
                     id: id
                 }
                 var success = function(response) {
@@ -207,7 +210,8 @@
                 
                 var url = API + "getdatesforclass/";
                 var data = {
-                    token: ctoken,
+                    accessToken: ctoken,
+                    username: cusername,
                     name: selectedClassName
                 }
                 var success = function(response) {
@@ -241,8 +245,9 @@
                 
                 var url = API + "getclassesfordate/";
                 var data = {
-                    token: ctoken,
-                    date: selectedDate
+                    accessToken: ctoken,
+                    date: selectedDate,
+                    username: cusername
                 }
                 var success = function(response) {
                     dates = response;
@@ -271,7 +276,8 @@
                 
                 var url = API + "viewbookings/";
                 var data = {
-                    token: ctoken
+                    accessToken: ctoken,
+                    username: cusername
                 }
                 var success = function(response) {
                     bookings = response;
