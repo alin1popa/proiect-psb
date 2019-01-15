@@ -45,29 +45,56 @@
             var API = "http://localhost:8080/customer/";
             
             function getAllClasses() {
-                allclasses = ["baschet", "fotbal", "alergare", "plm1", "plm2", "plm3", "plm4"];
-                $("#classes").html("");
-                for (let cls of allclasses) {
-                    $("#classes").append('<div class="class" onclick="getClassData(\''+cls+'\')">'+cls+'</div>');
+                //allclasses = ["baschet", "fotbal", "alergare", "plm1", "plm2", "plm3", "plm4"];
+                
+                var url = API + "getall/";
+                var data = {
+                    token: ctoken
                 }
+                var success = function(response) {
+                    allclasses = response;
+                    
+                    $("#classes").html("");
+                    for (let cls of allclasses) {
+                        $("#classes").append('<div class="class" onclick="getClassData(\''+cls+'\')">'+cls+'</div>');
+                    }
+                }
+            
+                //$.post(url, data, success);
+                success(["baschet", "fotbal", "alergare", "plm1", "plm2", "plm3", "plm4"]); // TODO remove
             }
             
             function getClassData(name) {
-                classdata = {
+                /*classdata = {
                     name: name,
                     description: "aici te poti juca cu mingile noastre slkfjs dlkfsldkf jdlkfjsdl jldsjf lsdjfljs d",
                     trainer: "mr. balls"
-                }
+                }*/
                 
-                console.log(classdata);
-                $("#classinfos").html("");
-                for (let p in classdata) {
-                    $("#classinfos").append('<p class="classinfo"><strong>'+p+'</strong>: '+classdata[p]+'</p>');
-                    console.log(classdata[p]);
+                var url = API + "getclass/";
+                var data = {
+                    token: ctoken
                 }
-                
-                displayPage(".viewclass-page");
-                appstate = VIEWCLASS;
+                var success = function(response) {
+                    classdata = response;
+                    
+                    console.log(classdata);
+                    $("#classinfos").html("");
+                    for (let p in classdata) {
+                        $("#classinfos").append('<p class="classinfo"><strong>'+p+'</strong>: '+classdata[p]+'</p>');
+                        console.log(classdata[p]);
+                    }
+                    
+                    displayPage(".viewclass-page");
+                    appstate = VIEWCLASS;
+                }
+            
+                //$.post(url, data, success);
+                success({
+                    name: name,
+                    description: "aici te poti juca cu mingile noastre slkfjs dlkfsldkf jdlkfjsdl jldsjf lsdjfljs d",
+                    trainer: "mr. balls"
+                }); // TODO remove
             }
             
             function hideAllPages() {
@@ -87,8 +114,18 @@
             }
             
             function logout() {
-                appstate = LOGOUT;
-                displayPage(".login-page");
+                var url = API + "signup/";
+                var data = {
+                    token: ctoken,
+                    username: cusername
+                }
+                var success = function(response) {
+                    appstate = LOGOUT;
+                    displayPage(".login-page");
+                }
+            
+                //$.post(url, data, success);
+                success();
             }
             
             function login() {
@@ -113,7 +150,7 @@
                     gohome();
                 }
             
-                $.post(url, data, success);
+                //$.post(url, data, success);
                 success("1234"); // TODO remove
             }
             
@@ -130,8 +167,24 @@
                     //gohome();
                 }
             
-                $.post(url, data, success);
-                //success("1234"); // TODO remove
+                //$.post(url, data, success);
+                success();
+            }
+            
+            function bookclass(id) {
+                var url = API + "book/";
+                var data = {
+                    token: ctoken,
+                    id: id
+                }
+                var success = function(response) {
+                    //ctoken = response;
+                    //cusername = $("#username").val();
+                    //gohome();
+                }
+            
+                //$.post(url, data, success);
+                success();
             }
             
             function goback() {
@@ -150,59 +203,96 @@
             function viewDatesForClass() {
                 selectedClassName = classdata.name;
                 
-                dates=[{id: 4, name: selectedClassName, date: "1-1-2018", time: "10:61"}];
+                //dates=[{id: 4, name: selectedClassName, date: "1-1-2018", time: "10:61"}];
                 
-                $("#dates").html("");
-                for (let p of dates) {
-                    console.log(p);
-                    $("#dates").append('<div class="date">\
-                            <span><strong>'+p.name+'</strong></span> \
-                            <span>'+p.date+'</span> \
-                            <span>'+p.time+'</span> \
-                            <button class="form-control btn-success bookbtn" onclick="bookclass('+p.id+')">Book</button>\
-                        </div>');
-                };
-                
-                appstate = DATESFORCLASS;
-                displayPage(".bookclass-page");
+                var url = API + "getdatesforclass/";
+                var data = {
+                    token: ctoken,
+                    name: selectedClassName
+                }
+                var success = function(response) {
+                    dates = response;
+                    
+                    $("#dates").html("");
+                    for (let p of dates) {
+                        console.log(p);
+                        $("#dates").append('<div class="date">\
+                                <span><strong>'+p.name+'</strong></span> \
+                                <span>'+p.date+'</span> \
+                                <span>'+p.time+'</span> \
+                                <button class="form-control btn-success bookbtn" onclick="bookclass('+p.id+')">Book</button>\
+                            </div>');
+                    };
+                    
+                    appstate = DATESFORCLASS;
+                    displayPage(".bookclass-page");
+                }
+            
+                //$.post(url, data, success);
+                success([{id: 4, name: selectedClassName, date: "1-1-2018", time: "10:61"}]); // TODO remove
             }
             
             function viewClassesForDate() {
                 selectedDate = $("#datepicker").val();
+                if (selectedDate == "")
+                    return;
                 
-                dates=[{id: 4, name: "baschet", date: selectedDate, time: "10:61"}];
+                //dates=[{id: 4, name: "baschet", date: selectedDate, time: "10:61"}];
                 
-                $("#dates").html("");
-                for (let p of dates) {
-                    console.log(p);
-                    $("#dates").append('<div class="date">\
-                            <span><strong>'+p.name+'</strong></span> \
-                            <span>'+p.date+'</span> \
-                            <span>'+p.time+'</span> \
-                            <button class="form-control btn-success bookbtn" onclick="bookclass('+p.id+')">Book</button>\
-                        </div>');
-                };
-                
-                appstate = CLASSESFORDATES;
-                displayPage(".bookclass-page");
+                var url = API + "getclassesfordate/";
+                var data = {
+                    token: ctoken,
+                    date: selectedDate
+                }
+                var success = function(response) {
+                    dates = response;
+                    
+                    $("#dates").html("");
+                    for (let p of dates) {
+                        console.log(p);
+                        $("#dates").append('<div class="date">\
+                                <span><strong>'+p.name+'</strong></span> \
+                                <span>'+p.date+'</span> \
+                                <span>'+p.time+'</span> \
+                                <button class="form-control btn-success bookbtn" onclick="bookclass('+p.id+')">Book</button>\
+                            </div>');
+                    };
+                    
+                    appstate = CLASSESFORDATES;
+                    displayPage(".bookclass-page");
+                }
+            
+                //$.post(url, data, success);
+                success([{id: 4, name: "baschet", date: selectedDate, time: "10:61"}]); // TODO remove
             }
             
             function viewbookings() {
-                bookings=[{client: "George Popescu", name: "baschet", date: "1-1-2018", time: "10:61"}];
+                //bookings=[{client: "George Popescu", name: "baschet", date: "1-1-2018", time: "10:61"}];
                 
-                $("#bookings").html("");
-                for (let p of bookings) {
-                    console.log(p);
-                    $("#bookings").append('<div class="booking">\
-                            <span><strong>'+p.client+'</strong></span> \
-                            <span><strong>'+p.name+'</strong></span> \
-                            <span>'+p.date+'</span> \
-                            <span>'+p.time+'</span> \
-                        </div>');
-                };
-                
-                appstate = ADMINPANEL;
-                displayPage(".admin-page");
+                var url = API + "viewbookings/";
+                var data = {
+                    token: ctoken
+                }
+                var success = function(response) {
+                    bookings = response;
+                    
+                    $("#bookings").html("");
+                    for (let p of bookings) {
+                        console.log(p);
+                        $("#bookings").append('<div class="booking">\
+                                <span><strong>'+p.client+'</strong></span> \
+                                <span><strong>'+p.name+'</strong></span> \
+                                <span>'+p.date+'</span> \
+                                <span>'+p.time+'</span> \
+                            </div>');
+                    };
+                    
+                    appstate = ADMINPANEL;
+                    displayPage(".admin-page");
+                }
+            
+                //$.post(url, data, success);
+                success([{client: "George Popescu", name: "baschet", date: "1-1-2018", time: "10:61"}]); // TODO remove
             }
             
             $(document).ready(function() {
