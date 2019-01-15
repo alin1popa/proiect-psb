@@ -47,7 +47,6 @@
             
             function getAllClasses() {
                 //allclasses = ["baschet", "fotbal", "alergare", "plm1", "plm2", "plm3", "plm4"];
-                
                 var url = CLASSESAPI + "getall/";
                 var data = {
                     accessToken: ctoken,
@@ -61,7 +60,7 @@
                         $("#classes").append('<div class="class" onclick="getClassData(\''+cls+'\')">'+cls+'</div>');
                     }
                 }
-            
+                
                 $.get(url, data, success);
                 //success(["baschet", "fotbal", "alergare", "plm1", "plm2", "plm3", "plm4"]); // TODO remove
             }
