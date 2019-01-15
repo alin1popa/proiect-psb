@@ -1,9 +1,0 @@
-1. signup - POST: username, password, name - raspunde cu succes sau eroare daca exista deja username
-2. login - POST: username, password - raspunde cu access token sau eroare
-3. get names of all classes - GET: fara parametri - raspunde cu o lista de nume pt toate cursurile pe care le oferim e.g. baschet, alergat, gantere, plm (poti sa faci json pls; also numele o sa fie unice)
-4. get classes on date - GET: access token, date (string "dd-mm-yy") - raspunde cu (id, nume, ora) pt toate clasele din data aia (e.g. intr-o zi pot fi 2 cursuri de baschet de la ora 10 si de la ora 14, si banda de alergat libera de la ora 18)
-5. get date for class - GET: access token, class name - raspunde cu (id, data, ora) la care exista clasa respectiva
-6. book class - POST: access token, class id - salveaza faptul ca userul care detine access tokenul respectiv se inregistreaza la clasa cu id-ul respectiv
-7. get class details - GET: access token, class name - raspunde cu descriere, numele antrenorului, si alte informatii random despre clasa respectiva
-8. view bookings - GET: access token - returneaza o lista cu [numele clientului, numele clasei, data, ora] pentru fiecare booking - endpointul asta trebuie sa fie disponibil numai pt un user special care e admin (poate fi hardcodat, nu cred ca e nevoie sa facem mai multi admini)
-9. logout - POST: access token - sterge access token-ul
