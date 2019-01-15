@@ -118,7 +118,7 @@
             }
             
             function logout() {
-                var url = USERSAPI + "signup/";
+                var url = USERSAPI + "logout/";
                 var data = {
                     accessToken: ctoken,
                     username: cusername
@@ -206,7 +206,7 @@
             }
             
             function viewDatesForClass() {
-                selectedClassName = classdata.name;
+                selectedClassName = classdata.className;
                 
                 //dates=[{id: 4, name: selectedClassName, date: "1-1-2018", time: "10:61"}];
                 
