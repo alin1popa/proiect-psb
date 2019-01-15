@@ -42,12 +42,13 @@
             var ctoken;
             var isadmin = false;
             
-            var API = "http://localhost:8080/customer/";
+            var USERSAPI = "http://localhost:8080/customer/";
+            var CLASSESAPI = "http://localhost:8080/classes/";
             
             function getAllClasses() {
                 //allclasses = ["baschet", "fotbal", "alergare", "plm1", "plm2", "plm3", "plm4"];
                 
-                var url = API + "getall/";
+                var url = CLASSESAPI + "getall/";
                 var data = {
                     accessToken: ctoken,
                     username: cusername
@@ -61,8 +62,8 @@
                     }
                 }
             
-                //$.post(url, data, success);
-                success(["baschet", "fotbal", "alergare", "plm1", "plm2", "plm3", "plm4"]); // TODO remove
+                $.post(url, data, success);
+                //success(["baschet", "fotbal", "alergare", "plm1", "plm2", "plm3", "plm4"]); // TODO remove
             }
             
             function getClassData(name) {
@@ -72,10 +73,11 @@
                     trainer: "mr. balls"
                 }*/
                 
-                var url = API + "getclass/";
+                var url = CLASSESAPI + "getclass/";
                 var data = {
                     accessToken: ctoken,
-                    username: cusername
+                    username: cusername,
+                    name: name
                 }
                 var success = function(response) {
                     classdata = response;
@@ -91,12 +93,12 @@
                     appstate = VIEWCLASS;
                 }
             
-                //$.post(url, data, success);
-                success({
+                $.post(url, data, success);
+                /*success({
                     name: name,
                     description: "aici te poti juca cu mingile noastre slkfjs dlkfsldkf jdlkfjsdl jldsjf lsdjfljs d",
                     trainer: "mr. balls"
-                }); // TODO remove
+                }); // TODO remove*/
             }
             
             function hideAllPages() {
@@ -116,7 +118,7 @@
             }
             
             function logout() {
-                var url = API + "signup/";
+                var url = USERSAPI + "signup/";
                 var data = {
                     accessToken: ctoken,
                     username: cusername
@@ -126,12 +128,12 @@
                     displayPage(".login-page");
                 }
             
-                //$.post(url, data, success);
-                success();
+                $.post(url, data, success);
+                //success(); // TODO remove
             }
             
             function login() {
-                var url = API + "login/";
+                var url = USERSAPI + "login/";
                 var data = {
                     username: $("#lusername").val(),
                     password: $("#lpassword").val()
@@ -152,12 +154,12 @@
                     gohome();
                 }
             
-                //$.post(url, data, success);
-                success("1234"); // TODO remove
+                $.post(url, data, success);
+                //success("1234"); // TODO remove
             }
             
             function signup() {
-                var url = API + "signup/";
+                var url = USERSAPI + "signup/";
                 var data = {
                     username: $("#username").val(),
                     password: $("#password").val(),
@@ -169,12 +171,12 @@
                     //gohome();
                 }
             
-                //$.post(url, data, success);
-                success();
+                $.post(url, data, success);
+                //success(); // TODO remove
             }
             
             function bookclass(id) {
-                var url = API + "book/";
+                var url = CLASSESAPI + "book/";
                 var data = {
                     accessToken: ctoken,
                     username: cusername,
@@ -186,8 +188,8 @@
                     //gohome();
                 }
             
-                //$.post(url, data, success);
-                success();
+                $.post(url, data, success);
+                //success(); // TODO remove
             }
             
             function goback() {
@@ -208,7 +210,7 @@
                 
                 //dates=[{id: 4, name: selectedClassName, date: "1-1-2018", time: "10:61"}];
                 
-                var url = API + "getdatesforclass/";
+                var url = CLASSESAPI + "getdatesforclass/";
                 var data = {
                     accessToken: ctoken,
                     username: cusername,
@@ -232,8 +234,8 @@
                     displayPage(".bookclass-page");
                 }
             
-                //$.post(url, data, success);
-                success([{id: 4, name: selectedClassName, date: "1-1-2018", time: "10:61"}]); // TODO remove
+                $.post(url, data, success);
+                //success([{id: 4, name: selectedClassName, date: "1-1-2018", time: "10:61"}]); // TODO remove
             }
             
             function viewClassesForDate() {
@@ -243,7 +245,7 @@
                 
                 //dates=[{id: 4, name: "baschet", date: selectedDate, time: "10:61"}];
                 
-                var url = API + "getclassesfordate/";
+                var url = CLASSESAPI + "getclassesfordate/";
                 var data = {
                     accessToken: ctoken,
                     date: selectedDate,
@@ -267,14 +269,14 @@
                     displayPage(".bookclass-page");
                 }
             
-                //$.post(url, data, success);
-                success([{id: 4, name: "baschet", date: selectedDate, time: "10:61"}]); // TODO remove
+                $.post(url, data, success);
+                //success([{id: 4, name: "baschet", date: selectedDate, time: "10:61"}]); // TODO remove
             }
             
             function viewbookings() {
                 //bookings=[{client: "George Popescu", name: "baschet", date: "1-1-2018", time: "10:61"}];
                 
-                var url = API + "viewbookings/";
+                var url = CLASSESAPI + "viewbookings/";
                 var data = {
                     accessToken: ctoken,
                     username: cusername
@@ -297,14 +299,14 @@
                     displayPage(".admin-page");
                 }
             
-                //$.post(url, data, success);
-                success([{client: "George Popescu", name: "baschet", date: "1-1-2018", time: "10:61"}]); // TODO remove
+                $.post(url, data, success);
+                //success([{client: "George Popescu", name: "baschet", date: "1-1-2018", time: "10:61"}]); // TODO remove
             }
             
             $(document).ready(function() {
                 
                 $("#refresh").click(getAllClasses);
-                getClassData("asdasd"); // TODO remove
+                //getClassData("asdasd"); // TODO remove
                 
                 //gohome();
                 displayPage(".login-page");
